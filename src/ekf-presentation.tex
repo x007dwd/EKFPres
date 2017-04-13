@@ -1,0 +1,447 @@
+% !Mode:: "TeX:ACP:Hard"
+\documentclass[14pt,hyperref={CJKbookmarks=true}]{beamer}
+
+%\usepackage[space,noindent]{ctex}
+\usepackage{mathrsfs}
+\usepackage{amsfonts,amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{lmodern}
+\usepackage[labelformat=empty,font=scriptsize,skip=0pt,justification=justified,singlelinecheck=false]{caption}
+\usepackage{amsthm}
+\usepackage{color}
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem*{cor}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{exmp}{Example}[section]
+
+\theoremstyle{remark}
+\newtheorem*{rem}{Remark}
+
+%\captionsetup{font={scriptsize}}
+\captionsetup[figure]{name=Fig., labelsep=space}
+%remove the icon
+\setbeamertemplate{bibliography item}{}
+%remove line breaks
+\setbeamertemplate{bibliography entry title}{}
+\setbeamertemplate{bibliography entry location}{}
+\setbeamertemplate{bibliography entry note}{}
+%\usetheme{AnnArbor}
+\usetheme{CambridgeUS}
+%\usetheme{Berlin}
+%\usetheme{Dresden}
+%\usecolortheme{beaver}
+%\setbeamercolor{itemize item}{fg=black!80!black}
+
+\setbeamercolor{normal text}{bg=black!10}
+\setbeamerfont{caption}{size=\tiny}
+\graphicspath{{image/}}
+
+\begin{document}
+
+%\section{Title}
+\title[IACAS]{Particle Detection on Low Contrast Image of Large Aperture Optics}
+%\subtitle[副题简称]{论文副题}
+\author{Wendong Ding, De Xu, Zhengtao Zhang and Dapeng Zhang}
+\institute[]{Institute of Automation Chinese Academy of Sciences\\University of Chinese Academy of Sciences}
+\date[]{2016.05.30}
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+%% Outline page
+\begin{frame}
+\frametitle{Quick Overview} 
+\large\tableofcontents
+\end{frame}
+
+%% 
+\section{Introduction}
+\begin{frame}
+\frametitle{Introduction} 
+\small
+\begin{block}{Particulate contamination deposition}
+
+\begin{enumerate}
+\item initiates damage on both bare and coated optical surfaces.
+\item decrease of cleanliness level of optics surface.
+\item reduces the load capacity of optical systems.
+\end{enumerate}
+\end{block}
+
+\begin{block}{Online particle detection problem}
+\begin{enumerate}
+\item challenging problems due to the particle's microsize and optic's large aperture.
+\item ease of contaminated by people and external contamination source.
+\end{enumerate}
+
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Introduction}{Figure, Research field \& Application}
+\begin{columns}[onlytextwidth]
+\begin{column}{0.8\textwidth}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\linewidth]{optics-inspection-1.jpg}
+\includegraphics[width=0.4\linewidth]{optics-inspection-2.jpg}\\
+\includegraphics[width=0.4\linewidth]{optics-inspection-3.jpg}
+\includegraphics[width=0.4\linewidth]{optics-inspection-4.jpg}
+\caption{
+}
+\end{figure}
+\end{column}
+\begin{column}{0.2\textwidth}
+\tiny
+\begin{tabular}{c|c}
+a&b\\\hline
+c&d
+\end{tabular}\\
+\scriptsize
+(a) Inspecting and sustaining the cleanliness level of optics\\
+(b) Inspecting the particulate contamination on large optics.\\
+(c) Inspecting the grass contained neodymium.\\
+(d) Inspecting the crystal with size of $\Phi380mm$.
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Method}
+
+\begin{frame}
+\small
+\frametitle{Method}{Particle Coarse Detection Algorithm}
+\begin{block}{Three steps}
+\begin{itemize}
+\item A gradient-based edge detection filter is constructed and used as the saliency criterion.
+\item Find particle's edge.
+\item Generate the whole particle region.
+\end{itemize}
+\end{block}
+
+\begin{block}{gradient-based edge detection filter}
+\begin{equation}\label{GradientImage}
+  \mathbf{I}'_s = \frac{1}{Z_s}\sum_{t\in\Omega}g(|\nabla \mathbf{I}_t|;\sigma_s)\mathbf{I}_s
+\end{equation}
+\scriptsize
+$g(x;\sigma)$ : Gaussian function, variance $\sigma^2$. 
+
+$Z_s$ is the normalization term $Z_s = \sum_{t\in\Omega}g(|\nabla\mathbf{I}_t|;\sigma_s)$.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Method}{Particle Coarse Detection Algorithm(cont.)}
+\small
+\begin{block} {Edge criteria \& Particle Region}
+Edge criteria:
+\begin{center}
+$\mathbf{I}_s - \mathbf{I}'_s \geq \varepsilon_1$
+\end{center}
+\begin{equation}\label{pixelclass}
+\begin{split}
+  \mathbf{R}_p = \{s| &\mathbf{I}_s\geq\mathbf{I}_e \enskip  \\
+  \&\& \enskip ( & \exists \enskip t \enskip \text{s.t.} \enskip \mathbf{I}_t\geq\mathbf{I}_e \enskip \&\& \enskip t\in U_4(s))\}
+\end{split}
+\end{equation}
+Particle Region
+\begin{equation}\label{eq:cluster_criterion}
+\begin{split}
+&if \quad t_1\in \mathbf{R}^1_p\enskip \&\&  \enskip t_2\in \mathbf{R}^2_p\enskip \&\& \\ &\enskip \enskip \quad t_1,t_2\in U(s) \\
+  &then  \quad s \in \mathbf{R}_p
+\end{split}
+\end{equation}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Method}{Image Alignment}
+\begin{columns}[onlytextwidth]
+\begin{column}{0.4\textwidth}
+\begin{block}{Pose Match}
+\scriptsize
+\begin{equation}\label{eq:eqRect}
+\begin{split}
+\mathbf{m}_1 = \lambda_1^{-1}\mathbf{A}[\mathbf{R}_1,\mathbf{t}_1]\mathbf{M}\\
+\mathbf{m}_2 = \lambda_2^{-1}\mathbf{A}[\mathbf{R}_2,\mathbf{t}_2]\mathbf{M}
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\mathbf{m}_i = \begin{bmatrix}u_i&v_i&1\end{bmatrix}^T\\
+\mathbf{M}=\begin{bmatrix}X&Y&1\end{bmatrix}^T
+\end{split}
+\end{equation}
+
+\begin{equation}\label{eq:RectHomo}
+  \mathbf{m}_2 = \mathbf{H}\mathbf{m}_1
+\end{equation}
+\begin{equation}\label{eq:GetHomo}
+  \mathbf{H} = \lambda^{-1}\lambda_2\mathbf{A}[\mathbf{R}_1,\mathbf{t}_1][\mathbf{R}_2,\mathbf{t}_2]^{-1}\mathbf{A}^{-1}
+\end{equation}
+\begin{equation}\label{eq:ExtrinsicM}
+\mathbf{H}  = \begin{bmatrix}c_{00}&c_{01}&c_{02} \\c_{10}&c_{11}&c_{12}\\ c_{20}&c_{21}&c_{22} \end{bmatrix}
+\end{equation}
+\end{block}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{block}{Solve Homgraph }
+
+\scriptsize
+
+
+substitute \eqref{eq:ExtrinsicM} into Intrinsic parameter matrix, we can get
+\begin{equation}\label{eq:Extrinsicu^*}
+u_2  = \frac{c_{00}u_1+c_{01}v_1+c_{02}}{c_{20}u_1+c_{21}v_1+c_{22}}
+\end{equation}
+\begin{equation}\label{eq:Extrinsicv^*}
+v_2  = \frac{c_{10}u_1+c_{11}v_1+c_{12}}{c_{20}u_1+c_{21}v_1+c_{22}}
+\end{equation}
+\begin{equation}\label{eq:ExtrinsicRew}
+\begin{cases}
+c'_{00}u_1+c'_{01}v_1+c'_{02} + c'_{20}u_1u_2+c'_{21}v_1u_2=u_2\\
+c'_{10}u_1+c'_{11}v_1+c'_{12} + c'_{20}u_1v_2+c'_{21}v_1v_2=v_2
+\end{cases}
+\end{equation}
+where $c'_{ij}=c_{ij}/c_{22}\ (i,j \in{1,2}\&\&i,i\neq2)$. For $n$ given known points, $\mathbf{H}$ can be determined \eqref{eq:ExtrinsicRew}.
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Method}{Image Alignment(cont.)}
+
+\small
+To find the matched point pairs, we use Binary Robust Invariant Scalable Keypoints (BRISK) to detect the keypoints and find the matched point pairs.
+\begin{itemize}
+\item Detects keypoints in octave layers \& layers in-between of the image pyramid.
+\item Apply Features from Accelerated Segment Test (FAST) detector.
+\item A non-maxima suppression method is performed to find the extreme point.
+\item Compute the main direction to have rotate variant.
+\item Compute Hamming distance and Match.
+\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{Method}{Particle Fine Extraction}
+\begin{block}{Assumption}
+\begin{enumerate}
+\item Two particles are concentric or have big degree of overlap.
+    \begin{enumerate}
+      \item Average intensity around the area changes greatly. This means that a new particle exists in the inspected image.
+      \item Average intensity around the area does not change greatly. It means that no new particle exists.
+    \end{enumerate}
+\item If two particle regions are non-concentric and have small degree of overlap, a new particle condition exists.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\small
+\frametitle{Method}{Particle Fine Extraction(cont.)}
+\begin{block}{Mean intensity variance}
+The mean value inside the curves is $M_p = \frac{1}{N}\sum_{p\in\Gamma}\mathbf{I}(p)$, where $N$ is the pixel number of set $\Gamma$, $\Gamma$ is the set containing all the pixels inside of $\mathbf{B}$. $M_{pp}$ and $M_{pr}$ are the mean intensity
+of particle candidates in the inspected image and the reference image, if $M_{pp}-M_{pr}\geq \lambda_2$, then mean intensity
+changes greatly.
+\end{block}
+\begin{block}{Concentric}
+Let $\mathbf{P}_i$ be particle candidate set in inspected image and $\mathbf{P}_r$ particle candidate set in reference image, and $D_{ir} = |C_i-C_r|$ where $C_i$ and $C_r$ are the centroids of $\mathbf{P}_i$ and $\mathbf{P}_r$. If $D_{ir} \leq \lambda_1$, the candidates are concentric.
+\end{block}
+\end{frame}
+\begin{frame}
+\frametitle{Method}{Particle Fine Extraction(cont.)}
+\begin{block}{Overlap definition}
+$N_o$ is pixel number of $\Gamma_i\bigcap\Gamma_r$, $N_u$ is pixel number of $\Gamma_i\bigcup\Gamma_r$. The degree of overlap  $D_o=\frac{N_o}{N_u}$. If the degree of overlap of two candidates $D_o \geq \lambda_3$,  two particle candidates are overlap.
+\end{block}
+\begin{block}{Two cases of overlap}
+\begin{enumerate}
+\item the contours of two candidates are intersected.
+\item one contour fully inside the other contour.
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}{Method}{Particle Classification}
+\small
+\begin{block}{Feature of Dust and Defects}
+\begin{itemize}
+\item Digs in defects are point-like in shape as dust particles.
+\item particles are usually smooth and round, usually regular in shape.
+\item shapes of dust vary greatly.
+\end{itemize}
+\end{block}
+
+\begin{block}{Feature used for Classification}
+\begin{itemize}
+\item histogram of gradient.
+\item texture. constructed by Gray Level Co-occurrence Matrix (GLCM) from image: Contrast, Correlation, Energy. 
+\item Morphological characters. represented by invariant moment. 
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{Experiment}
+\begin{frame}
+\frametitle{Experiment}
+\begin{block}{The Inspection System}
+\begin{enumerate}
+\item Experiment system is with a 2.66 GHz processor and 8 GB of memory.
+\item Light source.  wavelength at 525nm long with blue light.
+\item Used 30 optics images without particle as the reference image and 5 optics images with various sizes of particles. 
+\item Used another 8 optics images. for the performance evaluation.
+\item The size of the image is $6600\times4400$ pixels.
+\end{enumerate}
+\end{block}
+\end{frame}
+\begin{frame}
+\frametitle{Experiment}{Inspected Object and Vision System}
+\begin{columns}[onlytextwidth]
+\begin{column}{0.8\textwidth}
+\begin{figure}
+\includegraphics[width=0.46\linewidth]{Inspection-System.jpg}
+\includegraphics[width=0.5\linewidth]{vision-system.jpg}
+\end{figure}
+\end{column}
+\begin{column}{0.2\textwidth}
+\scriptsize
+\begin{tabular}{c|c}
+a&b
+\end{tabular}\\
+Real inspection system.  \\
+(a) The whole inspection system and the inspected optics.  \\
+(b)The vision system composition.
+\end{column}
+\end{columns}
+\end{frame}
+\begin{frame}{Particle Coarse detection}
+\begin{columns}[onlytextwidth]
+\begin{column}{0.9\textwidth}
+\begin{figure}
+\centering
+\includegraphics[width=0.55\linewidth]{particleDetect2D.pdf}
+\includegraphics[width=0.45\linewidth]{particleDetect1D.pdf}
+\caption{Particle candidate detection result. \\
+(a)Magnified part of original optics image. \\
+(b)The extracted particle candidates. Three rows of images in (a) and (b) are labeled with horizontal line. \\
+(c)Their gray value is shown in (c).} 
+\end{figure}
+\end{column}
+\begin{column}{0.1\textwidth}
+\scriptsize
+\begin{tabular}{c|c|c}
+a&b&c
+\end{tabular}
+\end{column}
+\end{columns}
+
+\end{frame}
+\begin{frame}
+\frametitle{Experiment}{Particle Fine Extraction}
+%On the optics image, we generated various sizes of particles. The diameter of the particle ranged from 1 to 19 pixels. The number distribution over particle size obeyed the normal distribution as .  where $\lambda_4 = 100, \sigma^2_1 = 50$ and $\delta_i$ is the size of particle. The minimum distance $\lambda_1 = 5$, minimum lightness variance $\lambda_2=50$ , and minimum degree of overlap $\lambda_3=0.1$.
+\begin{columns}[onlytextwidth]
+\begin{column}{0.5\textwidth}
+\begin{figure}
+\includegraphics[width=\linewidth]{ParticleCountResult.pdf}
+\end{figure}
+\end{column}
+\begin{column}{0.5\textwidth}
+\scriptsize
+\begin{block}{parameters}
+
+\begin{tabular}{c|c|c}
+\hline
+Gradient Filter variance& $\sigma_s$ & 5 \\
+Edge threshold& $\varepsilon_1$ & 0.03 \\
+$\varepsilon$-neighborhood& $\varepsilon_2$&  5\\
+Filter window& $\Omega$&5$\times$5\\\hline
+\end{tabular}
+\end{block}
+\begin{block}{Particle generation}
+\begin{equation}
+\xi=N(\lambda_4/\delta_i,\sigma_1^2)
+\end{equation}
+\end{block}
+\begin{block}{parameters}
+\begin{tabular}{c|c|c}
+\hline
+ particle size distribution mean& $\lambda_4$ & 100\\
+ particle size distribution variance&$\sigma^2_1$ &  50\\
+ minimum distance  & $\lambda_1$&  5\\
+ minimum lightness variance& $\lambda_2$&50\\
+ minimum degree of overlap &$\lambda_3$&0.1\\\hline
+\end{tabular}
+\end{block}
+\end{column}
+\end{columns}
+
+\end{frame}
+\begin{frame}{Experiment}{Particle determination(cont.)}
+\begin{columns}[onlytextwidth]
+\begin{column}{0.6\textwidth}
+\begin{figure}
+\includegraphics[width=\linewidth]{sub_result_label2.jpg}
+\end{figure}
+\end{column}
+\begin{column}{0.3\textwidth}
+\small
+The comparison between the actual particle number and the measured result of the real optics image. It gave the particle number with the error less than 35\%.
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Experiment}{Particle classification}
+\begin{columns}[onlytextwidth]
+\begin{column}{0.6\textwidth}
+\begin{figure}
+\includegraphics[width=\linewidth]{classifierOptimization.pdf}
+% \includegraphics[width=0.5\linewidth]{paretoChart.pdf}
+\end{figure}
+\end{column}
+\begin{column}{0.3\textwidth}
+\small
+The result of SVM classifier parameter optimization. When $C=0.1$ and $\gamma=10^{-5}$, the classifier had best performance, then on the test dataset the error was 5\%. 
+\end{column}
+\end{columns}
+\end{frame}
+\section{Conclusion}
+\begin{frame}{Conclusion}
+\small
+\begin{enumerate}
+\item  The inspected image with actual particle has low contrast.
+\item  Particle detection algorithm preformed only on the inspected image cannot realize accurately identifying.
+\item A particle coarse detection method was proposed to  detect all possible particles, then the reference image was utilized to fine extract the actual particles.
+\item It demonstrated a good ability of detecting particles on low contract image of large aperture optics which is implemented by several steps on the inspected image.
+\end{enumerate}
+\end{frame}
+%\section{Thanks}
+\begin{frame}
+%\frametitle{Thank you}
+\Huge
+\begin{center}
+Thank you
+\end{center}
+
+
+%\begin{block}{Collaborators}
+%De Xu, Zhengtao Zhang and Dapeng Zhang
+%\end{block}
+%\begin{block}{Foundation}
+% National Nature Science Foundation under Grant 61473293, 61227804 and 61303177
+%\end{block}
+%\begin{block}{For more information about the research itself:}
+%De Xu, Zhengtao Zhang and Dapeng Zhang
+%Institute of Automation, Chinese Academy of Sciences, Beijing 100190
+%E-mail: dingwendong2013@ia.ac.cn
+%\end{block}
+\end{frame}
+\end{document}
