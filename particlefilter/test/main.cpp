@@ -1,10 +1,10 @@
 /**
- * @brief 
+ * @brief
  * @file main.cpp
  *
- * This file is created at Almende B.V. It is open-source software and part of the Common 
- * Hybrid Agent Platform (CHAP). A toolbox with a lot of open-source tools, ranging from 
- * thread pools and TCP/IP components to control architectures and learning algorithms. 
+ * This file is created at Almende B.V. It is open-source software and part of the Common
+ * Hybrid Agent Platform (CHAP). A toolbox with a lot of open-source tools, ranging from
+ * thread pools and TCP/IP components to control architectures and learning algorithms.
  * This software is published under the GNU Lesser General Public license (LGPL).
  *
  * It is not possible to add usage restrictions to an open-source license. Nevertheless,
@@ -47,6 +47,7 @@ using namespace cimg_library;
 using namespace std;
 
 const DataValue red[] = { 255,0,0 }, green[] = { 0,255,0 }, blue[] = { 0,0,255 };
+#define FROM_FILE
 
 typedef cimg_library::CImg<DataValue> ImageType;
 
@@ -87,7 +88,7 @@ int main() {
 //	test_distance();
 //	create_track_image();
 //	test_convolution();
-	create_images();
+	//create_images();
 	return EXIT_SUCCESS;
 
 	PositionParticleFilter filter;
@@ -100,7 +101,7 @@ int main() {
 		return EXIT_FAILURE;
 	}
 
-	string path = home + "/mydata/dotty";
+	string path = "/home/bobin/Documents/code/git/EKFPres/data";
 	string extension = ".jpg";
 
 	srand48(seed);
@@ -109,10 +110,10 @@ int main() {
 #ifdef FROM_FILE
 	source.SetExtension(extension);
 #endif
-	if (!source.Update()) {
-		cerr << "Wrong path?" << endl;
-		return EXIT_FAILURE;
-	}
+	// if (!source.Update()) {
+	// 	cerr << "Wrong path?" << endl;
+	// 	return EXIT_FAILURE;
+	// }
 
 	string fn = "target_t1_1924674796";
 
@@ -207,4 +208,3 @@ int main() {
 
 	delete &track_img;
 }
-

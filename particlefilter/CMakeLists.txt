@@ -21,7 +21,7 @@ SET(PROJECT_NAME "ParticleFilter")
 
 # The name of the path from the parent directory
 SET(TESTBENCH_PATH "test")
-
+SET( CMAKE_BUILD_TYPE "Debug" )
 ##########################################################################################
 
 # Set the name
