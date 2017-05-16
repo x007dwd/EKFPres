@@ -89,7 +89,7 @@ int main() {
 //	create_track_image();
 //	test_convolution();
 	//create_images();
-	return EXIT_SUCCESS;
+	//return EXIT_SUCCESS;
 
 	PositionParticleFilter filter;
 	//FileImageSource<ImageType> source;
@@ -101,7 +101,7 @@ int main() {
 		return EXIT_FAILURE;
 	}
 
-	string path = "/home/bobin/Documents/code/git/EKFPres/data";
+	string path = "/home/bobin/Documents/code/git/EKFPres/data/dataset121";
 	string extension = ".jpg";
 
 	srand48(seed);
@@ -115,14 +115,18 @@ int main() {
 	// 	return EXIT_FAILURE;
 	// }
 
-	string fn = "target_t1_1924674796";
+	string fn = "1";
 
 	FileImageSource<ImageType> track;
 	track.SetPath(path);
 	track.SetExtension(extension);
-	string track_fn = fn + ".jpeg";
+	string track_fn = fn + ".jpg";
 	ImageType &track_img = *track.getImage(track_fn);
 
+	if (!track.Update()) {
+		cerr << "Wrong path?" << endl;
+		return EXIT_FAILURE;
+	}
 	NormalizedHistogramValues result;
 	getHistogram(track_img, result);
 
@@ -147,13 +151,14 @@ int main() {
 	while (++frame_id < frame_count) {
 
 #ifdef FROM_FILE
-		ImageType &img = *source.getImageShifted(frame_id*shift, 0);
+		ImageType &img = *track.getImageShifted(frame_id*shift, 0);
 #else
 		ImageType &img = *source.getImage();
-//		CImgDisplay test_disp(img, "Show image");
-//		sleep (30);
-//		return 1;
 #endif
+		//CImgDisplay test_disp(img, "Show image");
+		//sleep (30);
+//		return 1;
+
 
 		cout << "Clear coordinates" << endl;
 		coordinates.erase(coordinates.begin(), coordinates.end());
