@@ -19,6 +19,7 @@
 #include <iostream>
 
 // Vector
+#include <fstream>
 #include <string>
 #include <vector>
 using namespace std;
@@ -93,6 +94,7 @@ int main() {
   // Camera Capture
   cv::VideoCapture cap;
   string fname = "/home/bobin/Documents/code/py/ct/cv/data/Bouncingball.mp4";
+  string out_path = "/home/bobin/Documents/code/git/EKFPres/data/datay/";
   // >>>>> Camera Settings
   if (!cap.open(fname)) {
     cout << "Webcam not connected.\n"
@@ -112,8 +114,13 @@ int main() {
   bool found = false;
 
   int notFoundCount = 0;
-
+  ofstream rect_out("out-rect.txt", ios::out);
+  if (rect_out.is_open()) {
+    // rect_out << "This is a line.\n";
+    // rect_out.close();
+  }
   // >>>>> Main loop
+  int frame_id = 0;
   while (ch != 'q' && ch != 'Q') {
     double precTick = ticks;
     ticks = (double)cv::getTickCount();
@@ -147,7 +154,17 @@ int main() {
       center.x = state.at<float>(0);
       center.y = state.at<float>(1);
       cv::circle(res, center, 2, CV_RGB(255, 0, 0), -1);
+      stringstream ss;
+      ss << out_path << frame_id << ".jpg";
+      string outfile = ss.str();
+      std::cout << outfile << std::endl;
+      // cv::imwrite(outfile, frame);
+      frame_id++;
+      if (predRect.x > 0) {
 
+        rect_out << predRect.x << '\t' << predRect.y << '\t' << predRect.width
+                 << '\t' << predRect.height << std::endl;
+      }
       cv::rectangle(res, predRect, CV_RGB(255, 0, 0), 2);
     }
 
@@ -168,7 +185,7 @@ int main() {
                 cv::Scalar(MAX_H_BLUE / 2, 255, 255), rangeRes);
     // <<<<< Color Thresholding
     cv::imshow("HSV", frmHsv);
- // cv::waitKey(0);
+    // cv::waitKey(0);
 
     // >>>>> Improving the result
     cv::erode(rangeRes, rangeRes, cv::Mat(), cv::Point(-1, -1), 2);
@@ -274,6 +291,6 @@ int main() {
     ch = cv::waitKey(1);
   }
   // <<<<< Main loop
-
+  rect_out.close();
   return EXIT_SUCCESS;
 }
