@@ -1,3 +1,7 @@
+*.pyc
+*.cpp~
+*/.idea/*
+
 particlefilter/build
 KCFcpp/build/
 kalman-tracker/build/
