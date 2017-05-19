@@ -2,9 +2,7 @@
 *.cpp~
 */.idea/*
 
-particlefilter/build
-KCFcpp/build/
-kalman-tracker/build/
+*/build
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
