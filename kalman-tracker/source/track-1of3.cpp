@@ -175,7 +175,7 @@ int main() {
                 cv::Scalar(MAX_H_BLUE / 2, 255, 255), rangeRes);
     // <<<<< Color Thresholding
     cv::imshow("HSV", frmHsv);
-    cv::waitKey(0);
+    //cv::waitKey(0);
 
     // >>>>> Improving the result
     cv::erode(rangeRes, rangeRes, cv::Mat(), cv::Point(-1, -1), 2);

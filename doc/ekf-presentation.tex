@@ -11,6 +11,8 @@
 \usepackage[labelformat=empty,font=scriptsize,skip=0pt,justification=justified,singlelinecheck=false]{caption}
 \usepackage{amsthm}
 \usepackage{color}
+\usepackage{multimedia}
+
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{lem}[thm]{Lemma}
@@ -42,7 +44,7 @@
 
 \setbeamercolor{normal text}{bg=black!10}
 \setbeamerfont{caption}{size=\tiny}
-\graphicspath{{../image/}}
+\graphicspath{{./image/}}
 
 \begin{document}
 
@@ -59,25 +61,34 @@
 
 %% Outline page
 \begin{frame}
-\frametitle{Quick Overview} 
+\frametitle{Quick Overview}
 \large\tableofcontents
 \end{frame}
 
-%% 
+%%
 \section{Introduction}
 \begin{frame}
-\frametitle{Introduction} 
+\frametitle{Introduction}
 \small
-\begin{block}{Related works}
+\begin{block}{Bayes}
+\begin{equation}
+  P(x|y) =\frac{P(xy)}{P(y)}
+\end{equation}
 
-\begin{enumerate}
-\item xx
-\end{enumerate}
 \end{block}
 
 
 \end{frame}
+\begin{frame}
 
+%\begin{figure}[h!]
+%\centering
+%\movie[label=show3,width=1.0\textwidth,poster
+%       ,autostart,showcontrols,loop]
+%  {\includegraphics[width=1.0\textwidth]{squashscreen.jpg}}{landing.avi}
+%  \caption{caption}
+% \end{figure}
+\end{frame}
 
 
 \section{Method}
