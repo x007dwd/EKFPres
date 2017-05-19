@@ -172,7 +172,7 @@ int main() {
     // Note: change parameters for different colors
     cv::Mat rangeRes = cv::Mat::zeros(frame.size(), CV_8UC1);
     cv::inRange(frmHsv, cv::Scalar(MIN_H_BLUE / 2, 0, 0),
-                cv::Scalar(MAX_H_BLUE / 2, 255, 255), rangeRes);
+                cv::Scalar(MAX_H_BLUE / 2, 150, 255), rangeRes);
     // <<<<< Color Thresholding
     cv::imshow("HSV", frmHsv);
     //cv::waitKey(0);
